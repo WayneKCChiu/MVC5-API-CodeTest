@@ -1,0 +1,82 @@
+﻿@section FooterScript{
+   @Scripts.Render("~/bundles/task")
+}
+
+@section HeaderCss{
+   @Styles.Render("~/Style/taskcss")
+}
+
+<div id="task" class="container">
+   <div>
+      <button class="btn btn-info mb-1" v-on:click="createTask()" data-toggle="modal" data-target="#create-Task">+ Create Task</button>
+   </div>
+   <table class="table">
+      <thead>
+         <tr>
+            <th scope="col">#</th>
+            <th scope="col">TaskName</th>
+            <th scope="col">StartTime</th>
+            <th scope="col">Deadline</th>
+            <th scope="col">IsCompleted</th>
+            <th scope="col">Manage Task</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr :class="{'bg-white text-dark': task.IsCompleted}" v-for="(task, index) in taskList" v-if="taskList.length > 0 && !task.IsDeleted">
+            <th scope="row" v-text="task.TaskID"></th>
+            <td v-text="task.TaskName"></td>
+            <td v-text="task.StartTime"></td>
+            <td v-text="task.Deadline"></td>
+            <td>
+               <div v-if="task.IsCompleted">O</div>
+               <div v-else>X</div>
+            </td>
+            <td class="d-flex">
+               <div class="edit-data text-primary" v-on:click="editTask(task)">Edit</div>
+               &nbsp;|&nbsp;
+               <div class="delete text-danger" v-on:click="deleteTask(task.TaskID)">Delete</div>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+   <div class="modal fade" id="create-task" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" v-if="isCreate">Create Task</h5>
+               <h5 class="modal-title" v-else>Edit Task</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form name="createtask" @@submit.prevent="updateTask()">
+                  <div class="form-group">
+                     <label for="task-name">Task Name</label>
+                     <input type="text" class="form-control" name="taskname" v-model.trim="taskData.TaskName" id="task-name" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="start-time" class="mb-0">Start Time</label>
+                     <input type="date" class="form-control" name="starttime" v-model.trim="taskData.StartTime" id="start-time" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="deadline" class="mb-0">Deadline</label>
+                     <input type="date" class="form-control" name="deadline" v-model.trim="taskData.Deadline" id="deadline" required>
+                  </div>
+                  <div class="d-flex justify-content-start align-items-center" v-if="!isCreate">
+                     <label for="iscompleted" class="mb-0">IsCompleted</label>
+                     <input type="checkbox" class="ml-2 mt-1" name="iscompleted" v-model="taskData.IsCompleted" id="iscompleted">
+                  </div>
+                  <div class="d-flex justify-content-start align-items-center" v-if="!isCreate">
+                     <label for="isdeleted" class="mb-0">IsDeleted</label>
+                     <input type="checkbox" class="ml-2 mt-1" name="isdeleted" v-model="taskData.IsDeleted" id="isdeleted">
+                  </div>
+                  <div class="text-center">
+                     <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

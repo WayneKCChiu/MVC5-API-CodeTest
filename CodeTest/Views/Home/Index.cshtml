@@ -1,0 +1,73 @@
+﻿@section FooterScript{
+   @Scripts.Render("~/bundles/home")
+}
+
+@section HeaderCss{
+   @Styles.Render("~/Style/css")
+}
+
+<div id="home" class="container">
+   <div>
+      <button class="btn btn-primary mb-1" v-on:click="createEmployee()" data-toggle="modal" data-target="#create-employee">+ Create Employee</button>
+   </div>
+   <table class="table">
+      <thead>
+         <tr>
+            <th scope="col">#</th>
+            <th scope="col">FirstName</th>
+            <th scope="col">LastName</th>
+            <th scope="col">HiredDate</th>
+            <th scope="col">Manage Employee</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr v-for="(emp, index) in employeeList" v-if="employeeList.length > 0 && !emp.IsDeleted">
+            <th scope="row" v-text="emp.EmpID"></th>
+            <td v-text="emp.FirstName"></td>
+            <td v-text="emp.LastName"></td>
+            <td v-text="emp.HiredDate"></td>
+            <td class="d-flex">
+               <div class="edit-data text-primary" v-on:click="editEmployee(emp)">Edit</div>
+               &nbsp;|&nbsp;
+               <div class="delete text-danger" v-on:click="deleteData(emp.EmpID)">Delete</div>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+   <div class="modal fade" id="create-employee" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" v-if="isCreate">Create Employee</h5>
+               <h5 class="modal-title" v-else>Edit Employee</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form name="createemployee" @@submit.prevent="updateEmployee()">
+                  <div class="form-group">
+                     <label for="first-name">FirstName</label>
+                     <input type="text" class="form-control" name="firstname" v-model.trim="employeeData.FirstName" id="first-name" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="last-name">LastName</label>
+                     <input type="text" class="form-control" name="lastname" v-model.trim="employeeData.LastName" id="last-name" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="hired-date">Hired Date</label>
+                     <input type="date" class="form-control" name="hireddate" v-model.trim="employeeData.HiredDate" id="hired-date" required>
+                  </div>
+                  <div class="d-flex justify-content-start align-items-center" v-if="!isCreate">
+                     <label for="isdeleted" class="mb-0">IsDeleted</label>
+                     <input type="checkbox" class="ml-2 mt-1" name="isdeleted" v-model="employeeData.IsDeleted" id="isdeleted">
+                  </div>
+                  <div class="text-center">
+                     <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

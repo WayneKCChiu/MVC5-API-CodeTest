@@ -1,0 +1,28 @@
+﻿@{
+   Layout = "~/Views/Shared/_BaseLayout.cshtml";
+}
+
+@section HeaderCss{
+   @Styles.Render("~/Content/css")
+   @RenderSection("HeaderCss", required: false)
+}
+
+@section HeaderScript{
+   @Scripts.Render("~/bundles/modernizr")
+   @Scripts.Render("~/bundles/jquery")
+   @Scripts.Render("~/bundles/bootstrap")
+   @Scripts.Render("~/bundles/base")
+   @RenderSection("HeaderScript", required: false)
+}
+
+@section Header {
+   @Html.Partial("_Header")
+}
+
+@RenderBody()
+
+@section FooterScript{
+   @RenderSection("FooterScript", required: false)
+}
+
+
